@@ -1,3 +1,5 @@
+import {loadPosts} from './posts.js';
+
 export function loadProfile(username="") {
     document.querySelector('#user-view').style.display = "block";
     document.querySelector('#user-view').innerHTML = "";
@@ -176,7 +178,10 @@ async function displayFollows(event, user, category) {
             gotoUserProfileBtn.className = "btn btn-link";
             gotoUserProfileBtn.setAttribute('data-dismiss', 'modal');
             gotoUserProfileBtn.append(document.createTextNode(`@${user}`));
-            gotoUserProfileBtn.addEventListener('click', (e) => loadProfile(user));
+            gotoUserProfileBtn.addEventListener('click', (e) => {
+                loadProfile(user)
+                loadPosts('profile', user);
+            });
 
             listItem.append(gotoUserProfileBtn);
             followList.append(listItem);
