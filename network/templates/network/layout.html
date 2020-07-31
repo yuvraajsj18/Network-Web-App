@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Social Network{% endblock %}</title>
+
+        <!-- CSS only -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+        <!-- JS, Popper.js, and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <link href="{% static 'network/styles/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-sm navbar-dark mb-2" id="main-nav">
+            <a class="navbar-brand" href="{% url 'network:index' %}">Network</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse justify-content-end" id="main-navbar">
+              <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <button class="nav-link btn" id="profile"><strong>{{ user.username }}</strong></button>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                        <button class="nav-link btn" id="all-posts">All Posts</button>
+                    {% else %}
+                        <a href="{% url 'network:index' %}" class="nav-link btn">All Posts</a>
+                    {% endif %}
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <button class="nav-link btn" id="following">Following</button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'network:logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'network:login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'network:register' %}">Register</a>
+                    </li>
+                {% endif %}
+              </ul>
+            </div>
+          </nav>
+        
+        <div class="container">
+            <div id="main">
+                {% block main %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {% if user.is_authenticated%}
+            <script src="{% static 'network/scripts/main.js' %}" type="module"></script>
+        {% else %}
+            <script src="{% static 'network/scripts/notlogin.js' %}" type="module"></script>
+        {% endif %}
+
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    </body>
+</html>

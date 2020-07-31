@@ -1,0 +1,77 @@
+{% extends "network/layout.html" %}
+
+{% block title %}
+    Register | Social Network
+{% endblock %}
+
+{% block main %}
+    <h1 class="text-center display-4">Register</h1>
+
+    <div id="register-section" class="bg-dark p-4 rounded-lg text-white">
+        {% if message %}
+            <div class="alert alert-warning text-center">{{ message }}</div>
+        {% endif %}
+
+        <form action="{% url 'network:register' %}" method="post" id="register-form" novalidate>
+            {% csrf_token %}
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="id_firstname" class="input-group-text">First Name</label>
+                </div>
+                <input class="form-control" autofocus type="text" name="firstname" id="id_firstname" placeholder="First Name" required>
+                <div class="invalid-feedback">Please Enter First Name.</div>
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="id_lastname" class="input-group-text">Last Name</label>
+                </div>
+                <input class="form-control" autofocus type="text" name="lastname" id="id_lastname" placeholder="Last Name" required>
+                <div class="invalid-feedback">Please Enter Last Name.</div>
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="id_username" class="input-group-text">Username</label>
+                </div>
+                <input class="form-control" autofocus type="text" name="username" id="id_username" placeholder="Username" required>
+                <div class="invalid-feedback">Please Enter Username.</div>
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="id_email" class="input-group-text">Email</label>
+                </div>
+                <input class="form-control" type="email" name="email" id="id_email" placeholder="Email Address" required>
+                <div class="invalid-feedback">Please Enter Email.</div>
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="password" class="input-group-text">Password</label>
+                </div>
+                <input class="form-control" type="password" name="password" placeholder="Password" required>
+                <div class="invalid-feedback">Please Enter Password.</div>
+            </div>
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <label for="id_confirmation" class="input-group-text">Confirm Password</label>
+                </div>
+                <input class="form-control" type="password" name="confirmation" id="id_confirmation" placeholder="Password" required> 
+                <div class="invalid-feedback">Please Confirm Your Password.</div>
+            </div>
+            <input class="btn btn-primary btn-block" type="submit" value="Register">
+        </form>
+
+        <div class="text-center mt-3 mb-0">
+            Already have an account? <a class="text-success" href="{% url 'network:login' %}">Log In here.</a>
+        </div>
+    </div>
+
+    <script>
+        'use strict'
+        const registerForm = document.querySelector('#register-form');
+        registerForm.addEventListener('submit', (e) => {
+            if (registerForm.checkValidity() === false) {
+                e.preventDefault();
+                registerForm.classList.add('was-validated');
+            }
+        });
+    </script>
+{% endblock %}

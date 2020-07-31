@@ -1,0 +1,42 @@
+body {
+    background-color: #EEECF6;
+}
+
+#main-nav {
+    background-color: #191919;
+}
+
+#main {
+    max-width: 700px;
+    margin: auto;
+}
+
+#new-post textarea {
+    display: block;
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+    padding: 10px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    outline: none;
+    box-shadow: 0px 0px 14px -4px #4466e0;
+}
+
+#new-post textarea:focus {
+    border: 1px solid #191919;
+}
+
+#new-post button[type=submit] {
+    border-radius: 0;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.like-btn {
+    border-radius: 24px;
+}
+
+.post:hover {
+    box-shadow: 0px 0px 18px -4px #4466e0;
+}

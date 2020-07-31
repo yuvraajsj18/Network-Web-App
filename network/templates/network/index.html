@@ -1,0 +1,39 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block main %}
+<div id="user-view">
+</div>
+
+
+{% if user.is_authenticated %}
+<div id="new-post" class="mb-4">
+    <form method="POST" id="new-post-form" novalidate>
+        {% csrf_token %}
+        <textarea name="content" id="id_content" rows="4" placeholder="What's in your mind" maxlength="280" required></textarea>
+        <div class="invalid-feedback text-center alert alert-danger m-0 rounded-0">Please enter some text(maximum length:280)</div>
+        <button type="submit" class="post-btn btn btn-block btn-dark d-block ml-auto">Post</button>
+    </form>
+</div>
+{% else %}
+<div id="new-post">
+    <form method="POST" id="new-post-form" novalidate>
+        {% csrf_token %}
+        <textarea name="content" id="id_content" rows="4" placeholder="Please login to post" maxlength="280" required disabled></textarea>
+        <div class="invalid-feedback text-center alert alert-danger m-0 rounded-0">Please enter some text(maximum length:280)</div>
+        <button type="submit" class="post-btn btn btn-block btn-dark d-block ml-auto" disabled>Post</button>
+    </form>
+</div>
+{% endif %}
+
+<div id="posts-view">
+</div>
+
+
+<nav id="page-nav-button">
+        <ul class="pagination justify-content-between">
+          <li class="page-item disabled"><button class="page-link" id="previous-btn" disabled>Previous</button></li>
+          <li class="page-item"><button class="page-link px-4" id="next-btn">Next</button></li>
+        </ul>
+</nav>
+{% endblock %}
