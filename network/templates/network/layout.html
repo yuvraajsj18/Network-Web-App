@@ -36,7 +36,7 @@
                     {% if user.is_authenticated %}
                         <button class="nav-link btn" id="all-posts">All Posts</button>
                     {% else %}
-                        <a href="{% url 'network:index' %}" class="nav-link btn">All Posts</a>
+                        <a href="{% url 'network:index' %}" class="nav-link">All Posts</a>
                     {% endif %}
                 </li>
                 {% if user.is_authenticated %}
