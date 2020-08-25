@@ -16,6 +16,12 @@ export function loadProfile(username="") {
     .catch(error => console.log(error));
 }
 
+// async function getFollowersCount(username="") {
+//     const responce = await fetch(`/profile?username=${username}`);
+//     const userInfo = await responce.json();
+//     return userInfo.followers;
+// }
+
 function makeProfileDiv(userInfo) {
     const profileDiv = document.createElement('div');
     profileDiv.id = userInfo.id;
@@ -46,18 +52,13 @@ function makeProfileDiv(userInfo) {
     followUserDiv.id = "followUserDiv";
     document.querySelector('#user-view').append(followUserDiv);
 
-    // // create empty div for followers user list
-    // const followersUserDiv = document.createElement('div');
-    // followersUserDiv.id = "followersUserDiv";
-    // document.querySelector('#user-view').append(followersUserDiv);
-
     // following button
     const followingButton = document.createElement('button');
     followingButton.className = "btn btn-warning col-sm-3 my-1";
     followingButton.setAttribute('data-toggle', 'modal');
     followingButton.setAttribute('data-target', '#followingModal');
     followingButton.innerHTML = `Following <span class="badge badge-light">${userInfo.following}</span>`;
-    followingButton.addEventListener('click', (e) => displayFollows(e, userInfo.user, 'following'));
+    followingButton.addEventListener('click', (e) => displayFollows(userInfo.user, 'following'));
     followButtons.append(followingButton);
 
     // followers buttons
@@ -65,8 +66,8 @@ function makeProfileDiv(userInfo) {
     followersButton.className = "btn btn-success col-sm-3 my-1";
     followersButton.setAttribute('data-toggle', 'modal');
     followersButton.setAttribute('data-target', '#followersModal');
-    followersButton.innerHTML = `Followers <span class="badge badge-light">${userInfo.followers}</span>`
-    followersButton.addEventListener('click', (e) => displayFollows(e, userInfo.user, 'followers'));
+    followersButton.innerHTML = `Followers <span class="badge badge-light" id="followers-count">${userInfo.followers}</span>`
+    followersButton.addEventListener('click', (e) => displayFollows(userInfo.user, 'followers'));
     followButtons.append(followersButton);
 
     // follow button
@@ -89,7 +90,7 @@ function makeProfileDiv(userInfo) {
 
         // add follow event to button if active user
         if (userInfo.active_user) {
-            followButton.addEventListener('click', (e) => follow(e, userInfo.id));
+            followButton.addEventListener('click', (e) => follow(e, userInfo.id, userInfo.user));
         }
         followButtons.append(followButton);
     }
@@ -100,7 +101,7 @@ function makeProfileDiv(userInfo) {
 }
 
 // toggles follow of a user
-function follow(event, userID) {
+function follow(event, userID, username = null) {
     const followBtn = event.target;
 
     let followState = false;
@@ -127,19 +128,27 @@ function follow(event, userID) {
             followBtn.innerText = `Follow`;
             followBtn.dataset.follow = "false";
             followBtn.style.backgroundColor = "#9683ec";
+            // update followers count
+            const followersCountElement = document.querySelector('#followers-count');
+            let followersCount = Number(followersCountElement.innerText);
+            followersCountElement.innerText = followersCount - 1;
         }
         else {
             followBtn.dataset.follow === "false";
             followBtn.innerText = `Unfollow`;
             followBtn.dataset.follow = "true";
             followBtn.style.backgroundColor = "#5412B7";
+            // update followers count
+            const followersCountElement = document.querySelector('#followers-count');
+            let followersCount = Number(followersCountElement.innerText);
+            followersCountElement.innerText = followersCount + 1;
         }
     })
     .catch(error => console.log(error));
 } 
 
 // display list of following user
-async function displayFollows(event, user, category) {
+async function displayFollows(user, category) {
     // category should be one of - 'following' or 'followers'
     if (category !== 'following' && category !== 'followers') {
         console.log('wrong category');
